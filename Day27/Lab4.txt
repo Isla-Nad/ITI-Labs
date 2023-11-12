@@ -1,0 +1,28 @@
+cat /etc/shells
+env
+env
+echo $SHELL
+sh, ksh, bash
+PS1="\$(date)"
+PS2=":"
+alias ls="ls -l"
+
+
+ls -l /usr/bin > /tmp/commands.list 
+wc -l /tmp/commands.list 
+grep ^g /etc/passwd
+grep ^g /etc/passwd | cut -f1,5 -d:
+grep ^g /etc/passwd | cut -f1,5 -d: | sort -k2 -t: > file
+sudo find / -type f -name ".bash_profile" ls -R / > file1 2>file2 
+who | wc -l
+head /etc/passwd | tail -3
+stop 100
+kill -19 %1
+kill -18 %1
+jobs
+fg %1 bg %1
+kill -9 %1
+ps
+ps -U $(whoami) -N
+pgrep -u $(whoami)
+killall -u $(whoami)

@@ -1,0 +1,74 @@
+sudo a2dismod mpm_event
+sudo a2enmod mpm_worker
+apachectl -V | grep -i mpm
+sudo service apache2 restart
+
+=======================================
+
+apache2ctl -M | grep rewrite_module
+sudo a2enmod rewrite
+sudo service apache2 restart
+
+=======================================
+
+sudo nano /etc/apache2/sites-enabled/000-default.conf
+
+<VirtualHost *:80>
+	..........
+	..........
+	..........
+	..........
+	
+	RewriteEngine On
+	
+	# RewriteCond %{QUERY_STRING} "forbidden" [NC]
+	# RewriteRule ".*" - [F,L]
+	
+	#++++++
+	
+	# RewriteCond "%{QUERY_STRING}" .
+	# RewriteRule ".*" "/$1?" [R,L]
+	
+	#++++++
+	
+	# RewriteCond "%{QUERY_STRING}" (?:^|&)var=val(?:&|$)
+	# RewriteRule ".*" "/page2" [R,L]
+	
+	#++++++
+	
+	# RewriteCond "%{QUERY_STRING}" (?:^|&)var=([^&]+)
+	# RewriteRule ".*" "/$1/%1/%1?" [R,L]
+	
+	#++++++
+	
+	# RewriteRule "^/example/([^/]*)/([^/]*)" "/something.cgi?arg=$1&other=$2" [PT]
+	
+</VirtualHost>
+
+=======================================
+
+sudo nano /etc/apache2/sites-available/os-iti.conf
+
+sudo a2ensite os-iti.conf
+
+<VirtualHost *:80>
+
+    ServerName os.iti.gov.eg
+    DocumentRoot /var/www/html/local-site
+    RedirectMatch ^/$ /usr/share/
+    
+</VirtualHost>
+
+
+sudo nano /etc/hosts
+
+127.0.0.1	os.iti.gov.eg
+
+=======================================
+
+
+
+
+
+
+

@@ -1,0 +1,12 @@
+musician (#mu_id, mu_name, street, city, phone)
+
+song (#so_title, author, *album_id)
+
+instrument (ins_name, #musical_key)
+
+album (alb_title, #alb_id, copyright_date, *producer_id)
+
+play (#*musical_key, #*mu_id)
+
+performe (#*so_title, #*mu_id)
+

@@ -1,0 +1,20 @@
+{% extends "layouts/base.html" %}{% block title %} Post Details {% endblock %} {% block body %}
+<div class="container d-grid my-4">
+  <div class="row">
+    <div class="col-6">
+      <img src="{{ url_for('posts.send_uploaded_file', filename=post.image) }}" class="w-100" alt="..." />
+    </div>
+    <div class="list-group col-6">
+      <h4 class="list-group-item">Title: {{post.title}}</h4>
+      <a class="list-group-item">Body: {{post.body}}</a>
+      <div class="list-group-item">
+        Category:
+        <a class="list-group-item btn btn-outline-warning" href="{{ url_for('category.category_details', id=post.category_id) }}">{{post.category}}</a>
+      </div>
+      <a href="{{ url_for('posts.post_delete', id=post.id) }}" class="btn btn-outline-danger list-group-item">Delete</a>
+      <a href="{{ url_for('posts.post_edit', id=post.id) }}" class="btn btn-outline-warning list-group-item">Edit</a>
+      <a href="{{ url_for('posts.posts_list') }}" class="btn btn-outline-primary list-group-item">Go Back</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

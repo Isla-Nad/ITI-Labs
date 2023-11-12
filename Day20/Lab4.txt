@@ -1,0 +1,39 @@
+select d.Dnum, d.Dname, d.MGRSSN, e.Fname 
+from employee e, departments d 
+where d.MGRSSN = e.SSN;
+
+
+SELECT e.Fname, p.Pname
+ FROM employee e 
+ JOIN works_for w ON e.SSN = w.ESSN 
+ JOIN project p ON w.Pno = p.Pnumber;
+
+
+select d.Dnum, max(Salary) as maxSal, min(Salary) as minSal, avg(Salary) as avgSal
+from employee e, departments d
+where d.Dnum = e.DNO
+group by d.Dnum;
+
+
+select e.Fname
+from employee e
+join departments d on e.SSN = d.MGRSSN
+left join dependent dep on e.SSN = dep.ESSN
+where dep.ESSN is null;
+
+
+select p.Pname, sum(Hours) AS Total 
+from project p join works_for w 
+on p.Pnumber = w.Pno 
+group by p.Pname;
+
+
+select Fname 
+from employee 
+where SuperSSN = (select SSN from employee where Fname = "Kamel" and Lname = "Mohamed");
+
+
+create view projDepartment as
+select d.Dname, p.Pname 
+from departments d inner join project p 
+on d.Dnum = p.Dnum;

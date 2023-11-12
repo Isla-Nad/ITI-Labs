@@ -1,0 +1,14 @@
+@font-face {
+    font-family: Lucida Calligraphy;
+    src: url(LCALLIG.ttf);
+  }
+  
+p div span{
+    font-family: "Lucida Calligraphy";
+}
+
+div>h1{
+    text-align: center;
+}
+
+

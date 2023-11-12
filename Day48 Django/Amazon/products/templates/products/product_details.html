@@ -1,0 +1,28 @@
+{% extends 'layouts/base.html' %} {% load static %} {% block title %}{{product.title}}{% endblock %} {% block content %}
+<div class="d-flex justify-content-center gap-1 m-2">
+  <div class="card" style="width: 50rem">
+    <img src="{{product.get_image_url}}" class="card-img-top w-100 h-100" alt="..." />
+  </div>
+  <div class="card" style="width: 18rem">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><h2>{{product.title}}</h2></li>
+      <li class="list-group-item">ID: {{product.id}}</li>
+      <li class="list-group-item">Price: ${{product.price}}</li>
+      <li class="list-group-item">Instock: {{product.instock}}</li>
+      <li class="list-group-item">Category:<a href="{% url 'category.profile' product.category.id %}" class="list-group-item bg-danger-subtle">{{product.category}}</a></li>
+      <li class="list-group-item">
+        <p>other product in this category</p>
+        {% for pro in product.category.products.all %} {% if pro.id != product.id %}
+        <a href="{{pro.get_show_url}}" class="list-group-item bg-info-subtle">{{pro}} </a>
+        {% endif %} {% endfor %}
+      </li>
+      <li class="list-group-item bottom-0 position-absolute">
+        <a href="{% url 'products.list' %}" class="btn btn-primary">Go Back</a>
+        <a href="{% url 'products.edit' product.id %}" class="btn btn-warning">Edit</a>
+        <a href="{% url 'products.delete' product.id %}" class="btn btn-danger">Delete</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+{% endblock%}

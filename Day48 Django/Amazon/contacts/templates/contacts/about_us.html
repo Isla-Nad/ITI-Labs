@@ -1,0 +1,21 @@
+{% extends 'layouts/base.html' %} {% load static %} {% block title %}About US{% endblock %} {% block content %}
+<div class="d-flex rounded shadow gap-3 p-0 m-5">
+  <img src="{% static 'contacts/images/aboutus.png' %}" alt="" class="w-75 rounded" />
+  <div class="d-flex flex-column justify-content-around p-2">
+    <h1>Who we are?</h1>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit dicta dolor at consequatur laboriosam iure, deleniti facere itaque laudantium ullam nobis ipsa corporis. Ipsam dolore necessitatibus, molestiae deserunt quod delectus. <br /><br />Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis voluptates optio, suscipit minima nam perferendis fugiat voluptas obcaecati iusto quidem nesciunt doloribus quasi eligendi dignissimos qui distinctio porro nulla dolore?</p>
+    <a class="btn btn-outline-secondary" href="{% url 'products.list' %}">Shop NOW</a>
+  </div>
+</div>
+
+<h2 class="text-center">Our Team</h2>
+<div class="card m-auto" style="width: 18rem">
+  <div>
+    <img src="{% static 'contacts/images/islam.png' %}" alt="" class="card-img-top" />
+    <div class="card-body">
+      <h5 class="card-title">Islam Nady</h5>
+      <p>CEO, Founder, Atty. Separated they live in. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
+    </div>
+  </div>
+</div>
+{% endblock%}

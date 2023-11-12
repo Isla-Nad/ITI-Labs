@@ -1,0 +1,23 @@
+compress -f f1;uncompress f1.Z
+gzip f2; gunzip f2
+zip f3 f3; unzip f3.zip
+
+zcat f2.gz
+
+sudo tar -cf backup /etc;  tar -tvf backup 
+
+find /etc -user root 
+
+find ~ -type f -mtime -2
+
+find ~ -type d
+
+find / -type f -name ".profile"; find / -type f -name ".profile" > file 2>file2 | cat
+
+ls -l /etc/passwd;  ls -l /dev/pts/0; ls -l /dev/sda ==> -, c, d.
+
+ls -i / /etc /etc/hosts
+
+cp /etc/passwd pass; diff /etc/passwd pass; cmp /etc/passwd pass
+
+sudo ln /etc/passwd /boot/ps; ls -l /boot

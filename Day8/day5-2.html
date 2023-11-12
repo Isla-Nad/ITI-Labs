@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+      }
+
+      .contact-form,
+      .search-form {
+        margin-bottom: 20px;
+      }
+
+      input,
+      button {
+        margin: 5px;
+        padding: 10px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      table,
+      th,
+      td {
+        border: 1px solid #ddd;
+      }
+
+      th,
+      td {
+        padding: 10px;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      td:last-child {
+        text-align: center;
+      }
+
+      td:last-child button {
+        background-color: #ff6347;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Payment form</h1>
+    <p>required field followed by ..*</p>
+    <div class="contact-form">
+      <h2>Contact information</h2>
+      <fieldset>
+        <legend>Title</legend>
+        <input id="mister" type="radio" name="gender">
+        <label for="mister">Mister</label>
+        <input id="mister" type="radio" name="gender">
+        <label for="miss">Miss</label>
+      </fieldset>
+        <label for="name">Name: ..* </label>
+      <input type="text" id="name" placeholder="Name" required/>
+      <label for="name">Email: ..* </label>
+      <input type="email" id="email" placeholder="Email" required/>
+      <label for="card">Card type</label>
+      <select name="" id="card">
+        <option value="visa">Visa</option>
+      </select>
+      <label for="save">Save data to use</label>
+      <input type="checkbox" name="" id="save" checked>
+      <button id="add-btn">Add Contact</button>
+    </div>
+
+    <div class="search-form">
+      <input type="text" id="search" placeholder="Search by name" />
+    </div>
+    <h3>List of users</h3>
+    <table id="contact-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Card</th>
+          <th>Save data</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+
+      </thead>
+      <tbody>
+        <tr>
+            <td>Number of users is....</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <script>
+      const contactTable = document.getElementById("contact-table");
+      const addBtn = document.getElementById("add-btn");
+      const searchInput = document.getElementById("search");
+
+      addBtn.addEventListener("click", addContact);
+      searchInput.addEventListener("input", searchContacts);
+
+      // Load contacts from local storage on page load
+      loadContacts();
+
+      function loadContacts() {
+        const contacts = getContactsFromLocalStorage();
+        renderContactTable(contacts);
+      }
+
+      function addContact() {
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const phone = document.getElementById("phone").value;
+
+        const newContact = {
+          name: name,
+          email: email,
+          phone: phone,
+        };
+
+        const contacts = getContactsFromLocalStorage();
+        contacts.push(newContact);
+        saveContactsToLocalStorage(contacts);
+
+        renderContactTable(contacts);
+
+        // Clear input fields after adding contact
+        document.getElementById("name").value = "";
+        document.getElementById("email").value = "";
+        document.getElementById("phone").value = "";
+      }
+
+      function editContact(index) {
+        const contacts = getContactsFromLocalStorage();
+        const editedContact = {
+          name: document.getElementById(`name-${index}`).value,
+          email: document.getElementById(`email-${index}`).value,
+          phone: document.getElementById(`phone-${index}`).value,
+        };
+
+        contacts[index] = editedContact;
+        saveContactsToLocalStorage(contacts);
+        renderContactTable(contacts);
+      }
+
+      function deleteContact(index) {
+        const contacts = getContactsFromLocalStorage();
+        contacts.splice(index, 1);
+        saveContactsToLocalStorage(contacts);
+        renderContactTable(contacts);
+      }
+
+      function searchContacts() {
+        const query = searchInput.value.toLowerCase();
+        const contacts = getContactsFromLocalStorage();
+        const filteredContacts = contacts.filter((contact) =>
+          contact.name.toLowerCase().includes(query)
+        );
+        renderContactTable(filteredContacts);
+      }
+
+      function getContactsFromLocalStorage() {
+        const contacts = JSON.parse(localStorage.getItem("contacts")) || [];
+        return contacts;
+      }
+
+      function saveContactsToLocalStorage(contacts) {
+        localStorage.setItem("contacts", JSON.stringify(contacts));
+      }
+
+      function renderContactTable(contacts) {
+        const tbody = contactTable.querySelector("tbody");
+        tbody.innerHTML = "";
+
+        contacts.forEach((contact, index) => {
+          const row = document.createElement("tr");
+          const nameCell = document.createElement("td");
+          const emailCell = document.createElement("td");
+          const phoneCell = document.createElement("td");
+          const actionCell = document.createElement("td");
+
+          nameCell.innerHTML = `<input type="text" id="name-${index}" value="${contact.name}">`;
+          emailCell.innerHTML = `<input type="email" id="email-${index}" value="${contact.email}">`;
+          phoneCell.innerHTML = `<input type="tel" id="phone-${index}" value="${contact.phone}">`;
+
+          const saveBtn = document.createElement("button");
+          saveBtn.textContent = "Save";
+          saveBtn.addEventListener("click", () => editContact(index));
+          actionCell.appendChild(saveBtn);
+
+          const deleteBtn = document.createElement("button");
+          deleteBtn.textContent = "Delete";
+          deleteBtn.addEventListener("click", () => deleteContact(index));
+          actionCell.appendChild(deleteBtn);
+
+          row.appendChild(nameCell);
+          row.appendChild(emailCell);
+          row.appendChild(phoneCell);
+          row.appendChild(actionCell);
+          tbody.appendChild(row);
+        });
+      }
+    </script>
+  </body>
+</html>

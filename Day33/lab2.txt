@@ -1,0 +1,86 @@
+CREATE TYPE genders AS ENUM ('male', 'female');
+ALTER TABLE student ADD COLUMN gender genders;
+===================================================
+ALTER TABLE student ADD COLUMN birth_date date;
+===================================================
+ALTER TABLE student DROP COLUMN name;
+ALTER TABLE student ADD COLUMN first_name TEXT, ADD COLUMN last_name TEXT;
+===================================================
+CREATE TYPE contact_info AS (address TEXT,email TEXT);
+ALTER TABLE student ADD COLUMN contact_info contact_info;
+UPDATE student SET contact_info = ROW(address, email);
+ALTER TABLE student DROP COLUMN address, DROP COLUMN email;
+===================================================
+ALTER TABLE student ALTER COLUMN id TYPE SMALLINT;
+===================================================
+ALTER TABLE student DROP CONSTRAINT fk_track;
+ALTER TABLE student ADD CONSTRAINT fk_track FOREIGN KEY (track_id) REFERENCES track(id);
+===================================================
+INSERT INTO student(track_id, gender, birth_date, first_name, last_name, contact_info) VALUES (4, 'female', '2000-5-15', 'aya', 'fahed', ('syria','aye@dolphin.dev'));
+INSERT INTO track( name ) VALUES('php');
+INSERT INTO student_phones( student_id, phone ) VALUES(1, 011111111);
+INSERT INTO subject( name, description, track_id ) VALUES('react','asdsaddasd', 5);
+INSERT INTO exam( student_id, subject_id,  exam_score, exam_date) VALUES(4, 5, 45,'01-05-2023');
+===================================================
+SELECT * FROM student;
+===================================================
+SELECT * FROM student WhERE gender = 'male';
+===================================================
+SELECT COUNT(gender) FROM student GROUP BY gender HAVING gender='female';
+===================================================
+SELECT * FROM student WHERE birth_date < '1992-10-01';
+===================================================
+SELECT * FROM student WHERE birth_date < '1992-10-01' AND gender='male';
+===================================================
+SELECT s.*, MAX(e.exam_score) FROM subject s, exam e WHERE s.id = e.subject_id GROUP BY s.id ORDER BY MAX(e.exam_score);
+===================================================
+SELECT s.*, MAX(e.exam_score) FROM subject s, exam e WHERE s.id = e.subject_id GROUP BY s.id ORDER BY MAX(e.exam_score) DESC LIMIT 1;
+===================================================
+SELECT * FROM student WHERE first_name LIKE 'a%';
+===================================================
+SELECT COUNT(first_name) FROM student WHERE first_name = 'islam' GROUP BY first_name;
+===================================================
+SELECT gender, COUNT(gender) FROM student GROUP BY gender;
+===================================================
+SELECT first_name, COUNT(first_name) FROM student GROUP BY first_name HAVING COUNT(first_name) >= 2;
+===================================================
+SELECT s.*,t.name FROM student s, track t WHERE s.track_id = t.id;
+===================================================
+SELECT s.first_name, e.exam_score, su.name FROM student s LEFT JOIN exam e ON s.id = e.student_id LEFT JOIN subject su ON e.subject_id= su.id;
+====================================================
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+BEGIN TRANSACTION;
+INSERT INTO student(track_id, gender, birth_date, first_name, last_name, contact_info) VALUES (6, 'male', '2001-6-5', 'nady', 'daly', ('fahed','nady@dolphin.dev'));
+INSERT INTO subject( name, description, track_id ) VALUES('css','asdsaddasd', 1);
+INSERT INTO exam( student_id, subject_id,  exam_score, exam_date) VALUES(2, 1, 65,'01-05-2022');
+COMMIT;
+====================================================
+BEGIN TRANSACTION;
+INSERT INTO student(track_id, gender, birth_date, first_name, last_name, contact_info) VALUES (6, 'male', '2001-6-5', 'nady', 'daly', ('fahed','nady@dolphin.dev'));
+INSERT INTO subject( name, description, track_id ) VALUES('css','asdsaddasd', 1);
+INSERT INTO exam( student_id, subject_id,  exam_score, exam_date) VALUES(2, 1, 65,'01-05-2022');
+ROLLBACK;
+====================================================
+CREATE VIEW view1 AS SELECT s.first_name, t.name FROM student s, track t WHERE s.track_id=t.id;
+====================================================
+CREATE VIEW view2 AS SELECT s.name as sub_name, t.name FROM subject s, track t WHERE s.track_id=t.id;
+====================================================
+CREATE VIEW view3 AS SELECT s.first_name, su.name FROM student s, subject su WHERE s.track_id=su.track_id;
+====================================================
+CREATE VIEW view4 AS SELECT s.first_name, s.last_name, su.name, e.exam_score, e.exam_date FROM student s LEFT JOIN exam e ON s.id=e.student_id LEFT JOIN subject su ON su.id=e.subject_id;
+====================================================
+CREATE TEMP VIEW view5 AS SELECT s.*, MAX(e.exam_score) FROM subject s LEFT JOIN exam e ON s.id = e.subject_id GROUP BY s.id; 
+====================================================
+
+sudo adduser mohamed
+CREATE USER mohamed WITH PASSWORD '123';
+GRANT ALL PRIVILEGES ON DATABASE psql_lab1 TO mohamed;
+psql -U mohamed -d psql_lab1 
+ALTER USER mohamed WITH SUPERUSER;
+====================================================
+
+sudo adduser ahmed
+CREATE USER ahmed WITH PASSWORD 'trust';
+sudo nano /etc/postgresql/12/main/pg_hba.conf
+
+

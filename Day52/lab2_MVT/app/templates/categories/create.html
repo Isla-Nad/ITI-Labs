@@ -1,0 +1,15 @@
+{% extends "layouts/base.html" %} {% block title %}Create Category{% endblock %} {% block body %}
+<h1 class="text-center">Create New Category</h1>
+<form method="POST" class="container" enctype="multipart/form-data">
+  <label for="name">Name:</label>
+  <input type="text" name="name" class="form-control" required />
+
+  <label for="description">Description:</label>
+  <textarea name="description" class="form-control"></textarea>
+
+  <label for="image">Image:</label>
+  <input type="file" name="image" accept=".jpg, .jpeg, .png, .gif" class="form-control" />
+
+  <button type="submit" class="form-control btn btn-outline-info mt-2">Create Category</button>
+</form>
+{% endblock %}

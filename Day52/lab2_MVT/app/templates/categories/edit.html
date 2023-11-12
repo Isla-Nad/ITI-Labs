@@ -1,0 +1,14 @@
+{% extends "layouts/base.html" %} {% block title %}Edit Category{% endblock %} {% block body %}
+<h1 class="text-center">Edit Category - {{ category.name }}</h1>
+<form method="POST" class="container" enctype="multipart/form-data">
+  <label for="name">Name:</label>
+  <input type="text" name="name" class="form-control" value="{{ category.name }}" required />
+
+  <label for="description">Description:</label>
+  <textarea name="description" class="form-control">{{ category.description }}</textarea>
+
+  <label for="image">Image:</label>
+  <input type="file" name="image" class="form-control" accept=".jpg, .jpeg, .png, .gif" />
+  <button type="submit" class="form-control btn btn-outline-info mt-2">Update Category</button>
+</form>
+{% endblock %}

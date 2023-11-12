@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <style>
+      nav {
+        border-radius: 1rem;
+        background-color: gray;
+        grid-template-columns: repeat(5, 1fr);
+        font-size: 60px;
+        text-align: center;
+        display: grid;
+      }
+      nav li {
+        list-style: none;
+        cursor: pointer;
+        transition: all 1s;
+      }
+      nav li:hover {
+        background-color: rgb(204, 106, 93);
+        color: rgb(42, 50, 165);
+      }
+      #contact-chip {
+        margin-top: 2rem;
+        border-radius: 5rem;
+        width: 400px;
+        height: 100px;
+        display: flex;
+        text-align: center;
+        justify-content: space-between;
+        font-size: 30px;
+        align-items: center;
+        background-color: gray;
+        overflow: hidden;
+        transition: all 0.5s;
+      }
+      #contact-chip div {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+      }
+      #contact-chip[data-visible="true"] {
+        width: 100px;
+      }
+      #gallary {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        display: flex;
+        justify-content: space-around;
+      }
+      #gallary img {
+        width: 24%;
+        transition: all 2s;
+        border: 2px solid;
+        border-radius: 2rem;
+      }
+      #gallary img:hover {
+        scale: 1.5;
+      }
+      @keyframes scroll {
+        0% {
+          background-position: 0% 0;
+        }
+        100% {
+          background-position: 100% 0;
+        }
+      }
+      body {
+        animation: scroll 10s linear infinite alternate;
+        background: url("tiger.gif");
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <li style="background-color: green; border-radius: 1rem">
+        <a><i class="fa-solid fa-house"></i></a>
+      </li>
+
+      <li>
+        <a><i class="fa-solid fa-magnifying-glass"></i></a>
+      </li>
+      <li>
+        <a><i class="fa-solid fa-envelope"></i></a>
+      </li>
+      <li>
+        <a><i class="fa-solid fa-earth-europe"></i></a>
+      </li>
+      <li>
+        <a><i class="fa-solid fa-trash"></i></a>
+      </li>
+    </nav>
+    <div id="contact-chip" data-visible="false">
+      <img
+        width="100px"
+        height="100px"
+        src="5.jpg"
+        alt=""
+        style="border-radius: 5rem"
+      />
+      <div>
+        <p>jane row</p>
+        <i class="fa-solid fa-xmark" style="cursor: pointer; margin: 2rem"></i>
+      </div>
+    </div>
+    <div id="gallary">
+      <img src="5.jpg" alt="" />
+      <img src="5.jpg" alt="" />
+      <img src="5.jpg" alt="" />
+      <img src="5.jpg" alt="" />
+    </div>
+    <input
+      type="text"
+      style="width: 300px; transition: all 2s; background-color: aqua"
+    />
+    <script>
+      let closeBtn = document.querySelector("#contact-chip i");
+      let divo = document.querySelector("#contact-chip");
+      closeBtn.addEventListener("click", () => {
+        if (divo.getAttribute("data-visible") == "false") {
+          divo.setAttribute("data-visible", "true");
+        }
+      });
+
+      let input = document.querySelector("input");
+      input.addEventListener("focus", () => {
+        input.style.width = "500px";
+      });
+      input.addEventListener("blur", () => {
+        input.style.width = "300px";
+      });
+    </script>
+  </body>
+</html>

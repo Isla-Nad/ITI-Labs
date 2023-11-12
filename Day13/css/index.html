@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Random Color Text jQuery Plugin</title>
+    <style type="text/css">
+      .color-text {
+        cursor: pointer;
+      }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <p class="color-text">Hello, this text will change color!</p>
+
+    <script>
+      $.fn.randomColorText = function () {
+        return this.each(function () {
+          const randomColor = "#" + Math.floor(Math.random() * 1000).toString(16);
+          $(this).css("background", randomColor);
+        });
+      };
+
+      $(".color-text").click().randomColorText();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,17 @@
+{
+    "Queue1": {
+        "name": "Queue1",
+        "size": 2,
+        "queue_contents": [
+            2
+        ]
+    },
+    "Queue2": {
+        "name": "Queue2",
+        "size": 2,
+        "queue_contents": [
+            "hj",
+            2
+        ]
+    }
+}

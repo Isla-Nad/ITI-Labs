@@ -1,0 +1,13 @@
+insert into employee (SSN,Fname,Lname,Bdate,Address,Gender,Salary,SuperSSN,DNO) values (102672,"Islam","Nady","1995-10-20","100 Bah gajjh st.minia","M",3000,112233,30);
+
+insert into employee (SSN,Fname,Lname,Bdate,Address,Gender,DNO) values (102660,"Mohamed","Hamdy","1997-11-25","101 Bah gajjh st.minia","M",30);
+
+insert into departments (Dname,Dnum,MGRSSN,MGRSatrtDate) values ("DEPT IT",100,112233,"2006-11-01");
+
+update employee set Salary = Salary + (Salary * 20/100);
+
+select SSN, Fname, Lname from employee where (Salary * 12) > 10000;
+
+select * from employee where DNO = 30 and Salary between 1000 and 2000;
+
+select * from departments where Dnum = (select DNO from employee where SSN = (select min(SSN) from employee));

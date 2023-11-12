@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Lab1 - Music Player</title>
+
+    <!--[if gte mso 9
+      ]><xml>
+        <mso:CustomDocumentProperties>
+          <mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Editor msdt:dt="string">lec41@mcitegypt.onmicrosoft.com</mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Editor>
+          <mso:Order msdt:dt="string">15400.0000000000</mso:Order>
+          <mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Author msdt:dt="string">lec41@mcitegypt.onmicrosoft.com</mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Author>
+          <mso:ContentTypeId msdt:dt="string">0x0101</mso:ContentTypeId>
+        </mso:CustomDocumentProperties>
+      </xml><!
+    [endif]-->
+  </head>
+  <body>
+    <div id="mp-app">
+      <div id="mp-player">
+        <audio id="audio-player" src="Audio Samples/canon.mp3" controls></audio>
+      </div>
+      <div id="mp-options">
+        <input type="button" id="mp-play-mode" value="Play" />
+        <input type="button" id="mp-shuffle-mode" value="Shuffle" />
+        <input type="button" id="mp-repeat-mode" value="Repeat" />
+      </div>
+      <div id="mp-audio-list">
+        <div id="al-list">
+          <li style="cursor: pointer" href="Audio Samples/canon.mp3">canon <span> x</span></li>
+          <li style="cursor: pointer" href="Audio Samples/dream.mp3">dream <span> x</span></li>
+          <li style="cursor: pointer" href="Audio Samples/hero.mp3">hero <span> x</span></li>
+          <li style="cursor: pointer" href="Audio Samples/mombasa.mp3">mombasa <span> x</span></li>
+          <li style="cursor: pointer" href="Audio Samples/swan-lake.mp3">swan-lake <span> x</span></li>
+        </div>
+        <input type="file" id="al-add" accept="audio/.mp3" />
+      </div>
+    </div>
+    <script src="music-player.js"></script>
+  </body>
+</html>

@@ -1,0 +1,58 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div style="display: grid; grid-template-columns: 1fr; justify-items: center">
+      <h1>Login Form</h1>
+      <label for="username">Username:</label>
+      <input type="text" id="username" placeholder="Enter username" />
+      <label for="password">Password:</label>
+      <input type="password" id="password" placeholder="Enter password" />
+      <label for="remember">Remember me:</label>
+      <input type="checkbox" id="remember" />
+      <button id="loginButton">Login</button>
+      <script src="day2.js"></script>
+    </div>
+
+    <hr />
+
+    <!-- ======================================= -->
+    <div style="display: grid; grid-template-columns: 1fr; justify-items: center">
+      <div id="avatar">
+        <img src="" alt="" />
+        <p></p>
+      </div>
+    </div>
+    <hr />
+
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <div style="display: grid; grid-template-columns: 1fr; justify-items: center">
+      <h1>User List</h1>
+      <div id="userList" style="display: grid; grid-template-columns: repeat(3, 1fr)"></div>
+    </div>
+    <hr />
+    <!-- ==================================================== -->
+    <div style="display: grid; grid-template-columns: 1fr; justify-items: center">
+      <h1>dropdown list</h1>
+      <label for="userSelect">Select a User:</label>
+      <select id="userSelect">
+        <option value="1" selected>User 1</option>
+        <option value="2">User 2</option>
+        <option value="3">User 3</option>
+      </select>
+      <div id="userData"></div>
+    </div>
+    <hr>
+    <!-- ==================================================== -->
+    <div style="display: grid; grid-template-columns: 1fr; justify-items: center">
+      <h1>Search by ID(1,2,3....)</h1>
+      <input type="text" name="" id="search">
+      <button id="jake">Search</button>
+      <div id="userData2"></div>
+    </div>
+    
+  </body>
+</html>

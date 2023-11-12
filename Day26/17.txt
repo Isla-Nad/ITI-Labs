@@ -1,0 +1,7 @@
+1.  Copy a directory (read and execute permission for source directory and and write permission for target parent directory)
+2.  Copy a file (read permission for source file and and write permission for target parent directory)
+3.  Delete a file (write permission on the parent directory)
+4.  Change to a directory (execute permissions on the directory)
+5.  List a directory content (read and execute permissions on the directory)
+6.  View a file content (read permission on the file)
+7.  Modify a file content (write permission on the file)

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .slider-container {
+        position: relative;
+        max-width: 600px;
+        margin: 0 auto;
+        box-shadow: -2px 6px 20px 0px;
+      }
+
+      .image-container {
+        position: relative;
+      }
+
+      #slider-image {
+        width: 100%;
+        height: auto;
+      }
+
+      #slider-text {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        padding: 40px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .slider-controls {
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      button {
+        margin: 4px;
+        padding: 10px 20px;
+        font-size: 16px;
+        box-shadow: -2px 6px 20px 0px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="slider-container">
+      <div class="image-container">
+        <img id="slider-image" src="" alt="" />
+        <div id="slider-text"></div>
+      </div>
+    </div>
+    <div class="slider-controls">
+      <button id="prev-btn"><<</button>
+      <button id="next-btn">>></button>
+      <button id="play-btn">Play</button>
+      <button id="stop-btn">Stop</button>
+      <button id="speed-6s-btn">1x 6s</button>
+      <button id="speed-4s-btn">2x 4s</button>
+      <button id="speed-2s-btn">3x 2s</button>
+    </div>
+
+    <script>
+      let currentIndex = 0;
+      let intervalId;
+      let images = [];
+
+      function fetchImages() {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "https://jsonplaceholder.typicode.com/albums/1/photos");
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            images = JSON.parse(xhr.responseText);
+            showImage(currentIndex);
+          }
+        };
+        xhr.send();
+      }
+
+      function showImage(index) {
+        const sliderImage = document.getElementById("slider-image");
+        const sliderText = document.getElementById("slider-text");
+
+        sliderImage.src = images[index].url;
+        sliderText.textContent = images[index].title;
+      }
+
+      function playSlider(speed) {
+        clearInterval(intervalId);
+        intervalId = setInterval(() => {
+          currentIndex = (currentIndex + 1) % images.length;
+          showImage(currentIndex);
+        }, speed);
+      }
+
+      document
+        .getElementById("play-btn")
+        .addEventListener("click", () => playSlider(6000));
+      document
+        .getElementById("stop-btn")
+        .addEventListener("click", () => clearInterval(intervalId));
+      document.getElementById("prev-btn").addEventListener("click", () => {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        showImage(currentIndex);
+      });
+      document.getElementById("next-btn").addEventListener("click", () => {
+        currentIndex = (currentIndex + 1) % images.length;
+        showImage(currentIndex);
+      });
+      document
+        .getElementById("speed-6s-btn")
+        .addEventListener("click", () => playSlider(6000));
+      document
+        .getElementById("speed-4s-btn")
+        .addEventListener("click", () => playSlider(4000));
+      document
+        .getElementById("speed-2s-btn")
+        .addEventListener("click", () => playSlider(2000));
+
+      fetchImages();
+      playSlider(6000);
+    </script>
+  </body>
+</html>

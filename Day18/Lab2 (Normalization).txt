@@ -1,0 +1,33 @@
+Students (#app_no, name[first, last], city, postal_code, birth_date, prev_teacher, current_teacher, phone, course_id, course_desc, enrolled, attended)
+
+
+1st Normal Form: (composite attributes, multi-value, repeating group[multi-value + related])
+
+Students (#app_no, first_name, last_name, city, postal_code, birth_date, prev_teacher, current_teacher, phone)
+
+StudentCourses (#*app_no, #course_id, course_desc, enrolled, attended)
+
+
+
+2nd Normal Form: 1st NF + Partial Dependency
+
+Students (#app_no, first_name, last_name, city, postal_code, birth_date, prev_teacher, current_teacher, phone)
+
+Courses (#course_id, course_desc)
+
+StudentCourses (#*app_no, #*course_id, enrolled, attended)
+
+
+
+
+3rd Normal Form: 2nd NF + Transitive Dependency
+
+City (#city, postal_code )
+
+Students (#app_no, first_name, last_name, *city, birth_date, prev_teacher, current_teacher, phone)
+
+Courses (#course_id, course_desc)
+
+StudentCourses (#*app_no, #*course_id, enrolled, attended)
+
+

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        text-align: center;
+      }
+
+      .slider-container {
+        position: relative;
+        max-width: 600px;
+        margin: 0 auto;
+        box-shadow: -2px 6px 20px 0px;
+      }
+
+      .image-container {
+        position: relative;
+      }
+
+      #slider-image {
+        width: 100%;
+        height: auto;
+      }
+
+      #slider-text {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        padding: 40px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .slider-controls {
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      button {
+        margin: 4px;
+        padding: 10px 10px;
+        font-size: 15px;
+        box-shadow: -2px 2px 2px 0px;
+      }
+
+      .container {
+        border: 2px;
+        border-style: groove;
+        width: 35%;
+        display: inline-block;
+        background-color: rgb(98, 216, 206);
+        box-shadow: 0 0 20px;
+        border-radius: 20px;
+      }
+      fieldset {
+        width: 80%;
+        margin: 10px auto;
+        text-align: left;
+      }
+      input {
+        width: 50%;
+        margin: 10px auto;
+      }
+      table {
+        margin: 10px auto;
+      }
+    </style>
+  </head>
+  <!-------------------------------1st question ---------------->
+
+  <body>
+    <div class="slider-container">
+      <div class="image-container">
+        <img id="slider-image" src="" alt="" />
+        <div id="slider-text"></div>
+      </div>
+    </div>
+    <div class="slider-controls">
+      <button id="prev-btn"><<</button>
+      <button id="next-btn">>></button>
+      <button id="play-btn">Play</button>
+      <button id="stop-btn">Stop</button>
+      <button id="speed-6s-btn">1x 6s</button>
+      <button id="speed-4s-btn">2x 4s</button>
+      <button id="speed-2s-btn">3x 2s</button>
+    </div>
+
+    <hr />
+    <hr />
+    <hr />
+    <hr />
+
+
+    
+    <!------------------------------- 2nd question ---------------->
+    <h1>Payment Form</h1>
+    <div class="container">
+      <div class="contact-form">
+        <h2>Contact Information</h2>
+        <fieldset>
+          <legend>Title</legend>
+          <input
+            id="mister"
+            type="radio"
+            name="gender"
+            value="Mister"
+            checked
+          />
+          <label for="mister">Mister</label>
+          <input id="miss" type="radio" name="gender" value="Miss" />
+          <label for="miss">Miss</label>
+        </fieldset>
+        <br />
+        <label for="name">Name: <span class="required-field">..*</span></label>
+        <input type="text" id="name" placeholder="Name" required /><br />
+        <label for="email"
+          >Email: <span class="required-field">..*</span></label
+        >
+        <input type="email" id="email" placeholder="Email" required /><br />
+        <label for="card">Card type</label>
+        <select name="card" id="card">
+          <option value="visa">Visa</option></select
+        ><br />
+        <label for="save">Save data to use</label>
+        <input type="checkbox" name="save" id="save" checked /><br />
+        <button id="add-btn">Add Contact</button>
+        <button id="update-btn" style="display: none">Save</button>
+      </div>
+
+      <div class="search-form">
+        <input type="text" id="search" placeholder="Search by name" />
+      </div>
+      <h3>List of users</h3>
+      <table id="contact-table" border="2px">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Card</th>
+            <th>Save data</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Number of users is....</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="6">Number of users is....</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <script src="day5.js"></script>
+  </body>
+</html>

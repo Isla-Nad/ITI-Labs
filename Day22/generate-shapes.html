@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>SVG Tutorial</title>
+    <style>
+      body {
+        margin: 100px auto;
+        text-align: center;
+      }
+      svg {
+        border: 1px solid #0000ff;
+      }
+      .hide {
+        display: none;
+      }
+      input[type="number"] {
+        width: 75px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="dashboard">
+      <input type="button" value="Line" class="control-btn" id="ab-line" />
+      <input type="button" value="Rect" class="control-btn" id="ab-rect" />
+      <input type="button" value="Circle" class="control-btn" id="ab-circle" />
+    </div>
+    <div id="line" class="options hide">
+      <label for="sp-x">Start Point</label>
+      <input type="number" name="sp-x" id="sp-x" />
+      <input type="number" name="sp-y" id="sp-y" />
+      <label for="end">End Point</label>
+      <input type="number" name="ep-x" id="ep-x" />
+      <input type="number" name="ep-y" id="ep-y" />
+      <input type="button" value="generate" class="submit" id="gen-line" />
+    </div>
+    <div id="rect" class="options hide">
+      <label for="width">Width</label>
+      <input type="number" name="width" id="width" />
+      <label for="height">Height</label>
+      <input type="number" name="height" id="height" />
+      <label for="r-sp-x">Start Point</label>
+      <input type="number" name="r-sp-x" id="r-sp-x" />
+      <input type="number" name="r-sp-y" id="r-sp-y" />
+      <input type="button" value="generate" class="submit" id="gen-rect" />
+    </div>
+    <div id="circle" class="options hide">
+      <label for="c-sp-x">Start Point</label>
+      <input type="number" name="c-sp-x" id="c-sp-x" />
+      <input type="number" name="c-sp-y" id="c-sp-y" />
+      <label for="radius">Radius</label>
+      <input type="number" name="radius" id="radius" />
+      <input type="button" value="generate" class="submit" id="gen-circle" />
+    </div>
+    <svg id="my-svg" width="600" height="450"></svg>
+    <script src="js/generate-shapes.js"></script>
+  </body>
+</html>

@@ -1,0 +1,23 @@
+{% extends 'layouts/base.html' %} {% load static %} {% block title %}Category{% endblock %} {% block content %}
+<div class="d-flex justify-content-center gap-1 m-2">
+  <div class="card" style="width: 50rem">
+    <img src="{{category.get_image_url}}" class="card-img-top w-100 h-100" alt="..." />
+  </div>
+  <div class="card" style="width: 18rem">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><h2>{{category.name}}</h2></li>
+      <li class="list-group-item">Description: {{category.description}}</li>
+      <li class="list-group-item">
+        <p>All products in this category</p>
+        {% for pro in category.products.all %}
+        <a href="{{pro.get_show_url}}" class="list-group-item bg-info-subtle">{{pro}} </a><br />
+        {% endfor %}
+      </li>
+      <li class="list-group-item bottom-0 position-absolute">
+        <a href="{% url 'categories.list' %}" class="btn btn-primary">Go Back</a>
+        <a href="{% url 'category.delete' category.id %}" class="btn btn-danger">Delete</a>
+      </li>
+    </ul>
+  </div>
+</div>
+{% endblock%}

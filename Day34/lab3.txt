@@ -1,0 +1,197 @@
+SELECT s.first_name, s.last_name, su.name, e.exam_score, TO_CHAR(e.exam_date,'DD-Month-YYYY') FROM student s LEFT JOIN exam e ON s.id=e.student_id LEFT JOIN subject su ON su.id=e.subject_id;
+===================================================
+SELECT first_name,AGE(birth_date) FROM student;
+===================================================
+SELECT s.first_name, ROUND(e.exam_score,2) FROM student s LEFT JOIN exam e ON s.id = e.student_id;
+===================================================
+SELECT first_name, TO_CHAR(birth_date,'YYYY') FROM student;
+===================================================
+INSERT INTO exam VALUES(5,5,55,NOW());
+===================================================
+CREATE DATABASE ITI;
+CREATE SCHEMA myschema;
+CREATE TABLE myschema.mytable(id SERIAL PRIMARY KEY, name TEXT, colums INT);
+===================================================
++++++++++++++++++++++++++++++++++++++++++++++++++++
+CREATE OR REPLACE FUNCTION multiply(num1 float,num2 float) RETURNS float AS $$
+BEGIN
+RETURN num1 * num2;
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT multiply(4,8);
+===================================================
+CREATE OR REPLACE FUNCTION greeting(name text) RETURNS TEXT AS $$
+BEGIN
+RETURN concat('Hello' ,' ', name);
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT greeting(first_name) FROM student;
+===================================================
+CREATE OR REPLACE FUNCTION odd_even(num float) RETURNS TEXT AS $$
+BEGIN
+  IF num % 2=0 THEN
+     RETURN 'this number is even';
+  ELSE
+     RETURN 'this number is odd';
+  END IF;
+
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT odd_even(5);
+===================================================
+CREATE OR REPLACE FUNCTION AddNewStudent(firstName text, lastName text, birthdate date, TrackName text) RETURNS void AS $$
+BEGIN
+   INSERT INTO student (first_name, last_name, birth_date, track_id)
+   VALUES (firstName, lastName, birthdate, (SELECT id FROM track WHERE name = TrackName));
+
+   IF NOT EXISTS (SELECT name FROM track WHERE name = TrackName) THEN
+       INSERT INTO track (name) VALUES (TrackName);
+   END IF;
+
+   UPDATE student SET track_id = (SELECT id FROM track WHERE name = TrackName)
+   WHERE first_name = firstName AND last_name = lastName;
+
+   RETURN;
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT AddNewStudent('hoda', 'ahmed', '1998-5-7', 'python');
+SELECT AddNewStudent('heba', 'islam', '2025-5-7', 'Python');
+===================================================
+CREATE OR REPLACE FUNCTION student_info(mid int) RETURNS TEXT AS $$
+DECLARE
+   info TEXT;
+BEGIN
+   SELECT CONCAT(s.first_name, ' ', s.last_name, ', Age: ', age(s.birth_date), ', Track: ', t.name) INTO info FROM student s JOIN track t ON t.id = s.track_id WHERE s.id = mid;
+   
+   RETURN info;
+END;
+$$ LANGUAGE plpgsql;
+
+
+SELECT student_info(1);
+===================================================
+CREATE OR REPLACE FUNCTION track_info(TrackName text) RETURNS TABLE (first_name text) AS $$
+BEGIN
+   RETURN QUERY
+   SELECT s.first_name
+   FROM student s
+   JOIN track t ON t.id = s.track_id
+   WHERE t.name = TrackName;
+END;
+$$ LANGUAGE plpgsql;
+
+select track_info('Python');
+===================================================
+CREATE OR REPLACE FUNCTION student_score(STid int, SUid int) RETURNS int AS $$
+DECLARE
+   info int;
+BEGIN
+   SELECT e.exam_score INTO info FROM exam e WHERE e.student_id = STid AND e.subject_id = SUid;
+	
+RETURN info;
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT student_score(1,2);
+===================================================
+CREATE OR REPLACE FUNCTION student_failed(SUid int) RETURNS int AS $$
+DECLARE
+   info int;
+BEGIN
+   SELECT count(e.student_id) INTO info FROM exam e WHERE e.exam_score < 50 AND e.subject_id = SUid;
+	
+RETURN info;
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT student_failed(5);
+===================================================
+CREATE OR REPLACE FUNCTION avg_score(SUname text) RETURNS numeric AS $$
+DECLARE
+   info numeric;
+BEGIN
+   SELECT avg(e.exam_score) INTO info FROM exam e JOIN subject s ON s.id=e.subject_id WHERE s.name=SUname;
+	
+RETURN info;
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT avg_score('html');
+===================================================
+psql -u mohamed iti < back_up.psql
+\i /tmp/myfunc.psql
+===================================================
++++++++++++++++++++++++++++++++++++++++++++++++++++
+CREATE OR REPLACE FUNCTION AddNewSubject() RETURNS TRIGGER AS $$
+BEGIN
+   IF LENGTH(NEW.name) > 20 THEN
+      RETURN NULL;
+   END IF;
+
+   RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER insert_trigger BEFORE INSERT ON subject FOR EACH ROW EXECUTE FUNCTION AddNewSubject();
+
+INSERT INTO subject (name) VALUES ('django');
+INSERT INTO subject (name) VALUES ('oooooooooooooooooooooooo');
+===================================================
+CREATE OR REPLACE FUNCTION scoreUpdate() RETURNS TRIGGER AS $$
+BEGIN
+   IF NEW.exam_score > 100 OR NEW.exam_score < 0 THEN
+      RETURN NULL;
+   END IF;
+
+   RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_trigger BEFORE UPDATE OR INSERT ON exam FOR EACH ROW EXECUTE FUNCTION scoreUpdate();
+
+UPDATE exam set exam_score=102 WHERE student_id=1;
+INSERT INTO exam (exam_score) VALUES (102);
+===================================================
+CREATE OR REPLACE FUNCTION checkTime() RETURNS TRIGGER AS $$
+BEGIN
+   IF to_char(now(),'HH24:MI') > '19:00' THEN
+      RETURN NULL;
+   END IF;
+
+   RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER time_trigger BEFORE UPDATE OR INSERT OR DELETE
+ON exam , student,student_phones,subject,track
+FOR EACH STATEMENT EXECUTE FUNCTION checkTime();
+===================================================
+CREATE OR REPLACE FUNCTION checkTime() RETURNS TRIGGER AS $$
+BEGIN
+   IF to_char(now(),'HH24:MI') > '19:00' THEN
+      RAISE EXCEPTION 'Actions not allowed after 7:00 PM';
+      RETURN NULL;
+   END IF;
+
+   RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER exam_time_trigger AFTER INSERT OR UPDATE OR DELETE ON exam FOR EACH ROW EXECUTE FUNCTION checkTime();
+
+CREATE TRIGGER student_time_trigger AFTER INSERT OR UPDATE OR DELETE ON student FOR EACH ROW EXECUTE FUNCTION checkTime();
+
+CREATE TRIGGER student_phones_time_trigger AFTER INSERT OR UPDATE OR DELETE ON student_phones FOR EACH ROW EXECUTE FUNCTION checkTime();
+
+CREATE TRIGGER subject_time_trigger AFTER INSEROR UPDATE OR DELETE ON subject FOR EACH ROW EXECUTE FUNCTION checkTime();
+
+CREATE TRIGGER track_time_trigger AFTER INSERT OR UPDATE OR DELETE ON track FOR EACH ROW EXECUTE FUNCTION checkTime();
+===================================================
+pg_dump psql_lab1 > back_up.psql;
+===================================================
+pg_dump -t student -f '/tmp/myBackup'
+COPY  student TO '/tmp/myBackup';

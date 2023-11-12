@@ -1,0 +1,24 @@
+{% extends "layouts/base.html" %} {% block title %}Edit Post{% endblock %} {% block body %}
+
+<h1 class="text-center">Edit Post: {{ post.title }}</h1>
+<form method="POST" class="container" enctype="multipart/form-data">
+  <label for="title" class="form-label">Title:</label>
+  <input type="text" name="title" class="form-control" value="{{ post.title }}" required />
+
+  <label for="body" class="form-label">Body:</label>
+  <textarea name="body" class="form-control" required>{{ post.body }}</textarea>
+
+  <label for="image" class="form-label">Image:</label>
+  <input type="file" name="image" accept=".jpg, .jpeg, .png, .gif" class="form-control" />
+
+  <label for="category" class="form-label">Category:</label>
+  <select name="category" class="form-select" required>
+    <option value="" disabled selected>Select a category</option>
+    {% for category in categories %}
+    <option value="{{ category.id }}" {% if post.category_id == category.id %} selected {% endif %} />{{ category.name }}</option>
+    {% endfor %}
+  </select>
+
+  <input type="submit" value="Update Post" class="form-control btn btn-outline-info mt-2" />
+</form>
+{% endblock %}

@@ -1,0 +1,67 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div style="display: grid; grid-template-columns: 1fr; justify-items: center">
+      <h1>Login Form Tested in firefox</h1>
+      <label for="username">Username:</label>
+      <input type="text" id="username" required /><br />
+      <label for="password">Password:</label>
+      <input type="password" id="password" required /><br />
+      <label for="remember">Remember me:</label>
+      <input type="checkbox" id="remember" /><br />
+      <button id="loginButton">Login</button>
+    </div>
+    <script>
+      let usernameInput = document.getElementById("username");
+      let passwordInput = document.getElementById("password");
+      let checkbox = document.getElementById("remember");
+      let btn = document.getElementById("loginButton");
+      function setCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+          let date = new Date();
+          date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+          expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "") + expires + "; path=/";
+      }
+      function getCookie(name) {
+        let nameEQ = name + "=";
+        let ca = document.cookie.split(";");
+        for (let i = 0; i < ca.length; i++) {
+          let c = ca[i];
+          while (c.charAt(0) === " ") c = c.substring(1, c.length);
+          if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+      }
+      function eraseCookie(name) {
+        document.cookie = name + "=; Max-Age=-99999999;";
+      }
+      btn.addEventListener("click", () => {
+        let username = usernameInput.value;
+        let password = passwordInput.value;
+        let isRemembered = checkbox.checked;
+        if (username && password && isRemembered) {
+          setCookie("username", username, 30); 
+          setCookie("password", password, 30); 
+          setCookie("remembered", "true", 30); 
+        } else {
+          eraseCookie("username");
+          eraseCookie("password");
+          eraseCookie("remembered");
+        }
+      });
+      let isRemembered = getCookie("remembered") === "true";
+      let savedUsername = getCookie("username");
+      let savedPassword = getCookie("password");
+      usernameInput.value = savedUsername || "";
+      passwordInput.value = savedPassword || "";
+      checkbox.checked = isRemembered;
+    </script>
+  </body>
+</html>

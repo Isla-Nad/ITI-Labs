@@ -1,0 +1,91 @@
+student ( #id, name, address, email, *track_id )
+exam ( *student-id, *subject_id, exam_score, exam_date)
+student_phones ( *student-id, phone )
+track (#id, name )
+subject ( #id, name, description, *track_id )
+.............................................
+===================================================================
+CREATE TABLE track(
+ id SERIAL PRIMARY KEY,
+ name TEXT
+);
+
+CREATE TABLE student(
+ id SERIAL PRIMARY KEY,
+ name TEXT,
+ address TEXT,
+ email TEXT,
+ track_id INT,
+ CONSTRAINT fk_track FOREIGN KEY(track_id) REFERENCES track(id)
+);
+
+CREATE TABLE student_phones(
+student_id INT,
+phone INT,
+CONSTRAINT fk_student FOREIGN KEY(student_id) REFERENCES student(id)
+);
+
+CREATE TABLE subject(
+id SERIAL PRIMARY KEY,
+name TEXT,
+description TEXT,
+track_id INT,
+CONSTRAINT fk_track FOREIGN KEY(track_id) REFERENCES track(id)
+);
+
+CREATE TABLE exam(
+student_id INT,
+subject_id INT,
+exam_score INT,
+exam_date DATE,
+CONSTRAINT fk_student FOREIGN KEY(student_id) REFERENCES student(id),
+CONSTRAINT fk_subject FOREIGN KEY(subject_id) REFERENCES subject(id)
+);
+
+
+ALTER TABLE student
+ALTER COLUMN track_id TYPE INT;
+===========================================================================
+INSERT INTO track( name )
+VALUES('Telecom'),
+      ('OpenSource'),
+      ('Java'),
+      ('Game'),
+      ('Python');
+      
+INSERT INTO student( name, address, email, track_id)
+VALUES('islam','egypt','islam.doe@bluebird.dev', 1),
+      ('ahmed','usa','ahmed.doe@bluebird.dev', 2),
+      ('mohamed','germany','mohamed.wright@dolphin.dev', 1),
+      ('hossam','japan','hossam.wright@dolphin.dev', NULL),
+      ('kamal','england','kamal.wright@dolphin.dev', 5);
+      
+INSERT INTO student_phones( student_id, phone )
+VALUES(1, 011111111),
+      (1, 022222222),
+      (2, 033333333),
+      (5, 044444444),
+      (4, 055555555);
+
+INSERT INTO subject( name, description, track_id )
+VALUES('html','aaaaaaaaa', 2),
+      ('css','bbbbbbbbb', 3),
+      ('python','ccccccc', 5),
+      ('database','dddddddd', 1),
+      ('linux','eeeeeeeee', 2);
+
+INSERT INTO exam( student_id, subject_id,  exam_score, exam_date)
+VALUES(1, 2, 95,'01-05-2023'),
+      (2, 1, 50,'04-05-2023'),
+      (5, 3, 45,'03-05-2023'),
+      (2, 4, 30,'02-05-2023'),
+      (4, 3, 54,'05-05-2023');
+
+      
+================================================================================
+select * from exam;
+select * from student_phones;
+select * from student;
+select * from subject;
+select * from track;
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

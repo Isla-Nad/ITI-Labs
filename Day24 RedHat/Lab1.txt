@@ -1,0 +1,31 @@
+1- installed Ubuntu
+
+2- cat --help; more --help
+
+3- rm --help; rmdir --help
+
+4- cd ~; mkdir dir1 docs
+   cd dir1; mkdir dir11 dir12 
+   cd dir11; touch file1
+   cd ~/docs; touch mycv
+   cd
+   rm -r dir1/dir11
+   rmdir -p dir1/dir12
+   cd /home/oem/docs/
+   cd docs
+   
+5- cp /etc/passwd ~/mypasswd
+
+6- mv mypasswd oldpasswd
+
+7- cd -
+   cd /home/oem
+   cd ~
+   cd
+   cd $HOME
+
+8- cd /usr/bin; ls w*
+
+9- head -4 /etc/passwd
+
+10- tail -7 /etc/passwd

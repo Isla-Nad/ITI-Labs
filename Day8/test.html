@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Payment Form</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+      }
+
+      .contact-form,
+      .search-form {
+        margin-bottom: 20px;
+      }
+
+      input,
+      button {
+        margin: 5px;
+        padding: 10px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      table,
+      th,
+      td {
+        border: 1px solid #ddd;
+      }
+
+      th,
+      td {
+        padding: 10px;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      td:last-child {
+        text-align: center;
+      }
+
+      td:last-child button {
+        background-color: #ff6347;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="contact-form">
+        <h2>Contact Information</h2>
+        <fieldset>
+          <legend>Title</legend>
+          <input id="mister" type="radio" name="gender" value="Mister" />
+          <label for="mister">Mister</label>
+          <input id="miss" type="radio" name="gender" value="Miss" />
+          <label for="miss">Miss</label>
+        </fieldset>
+        <label for="name">Name: <span class="required-field">..*</span></label>
+        <input type="text" id="name" placeholder="Name" required />
+        <label for="email"
+          >Email: <span class="required-field">..*</span></label
+        >
+        <input type="email" id="email" placeholder="Email" required />
+        <label for="card">Card type</label>
+        <select name="card" id="card">
+          <option value="visa">Visa</option>
+        </select>
+        <label for="save">Save data to use</label>
+        <input type="checkbox" name="save" id="save" checked />
+        <button id="add-btn">Add Contact</button>
+        <button id="update-btn" style="display: none">Save</button>
+      </div>
+
+      <div class="search-form">
+        <input type="text" id="search" placeholder="Search by name" />
+      </div>
+      <h3>List of users</h3>
+      <table id="contact-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Card</th>
+            <th>Save data</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Number of users is....</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="6">Number of users is....</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <script>
+      const contactTable = document.getElementById("contact-table");
+      const addBtn = document.getElementById("add-btn");
+      const updateBtn = document.getElementById("update-btn");
+      const searchInput = document.getElementById("search");
+
+      addBtn.addEventListener("click", addContact);
+      updateBtn.addEventListener("click", updateContact);
+      searchInput.addEventListener("input", searchContacts);
+
+      // Load contacts from local storage on page load
+      loadContacts();
+
+      function loadContacts() {
+        const contacts = getContactsFromLocalStorage();
+        renderContactTable(contacts);
+      }
+
+      function addContact() {
+        const title = document.querySelector(
+          'input[name="gender"]:checked'
+        ).value;
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const card = document.getElementById("card").value;
+        const save = document.getElementById("save").checked;
+
+        const newContact = {
+          title: title,
+          name: name,
+          email: email,
+          card: card,
+          save: save,
+        };
+
+        const contacts = getContactsFromLocalStorage();
+        contacts.push(newContact);
+        saveContactsToLocalStorage(contacts);
+
+        renderContactTable(contacts);
+        updateNumberOfUsers(contacts.length);
+
+        // Clear input fields after adding contact
+        document.querySelector('input[name="gender"]:checked').checked = false;
+        document.getElementById("name").value = "";
+        document.getElementById("email").value = "";
+      }
+
+      function editContact(index) {
+        const contacts = getContactsFromLocalStorage();
+        const contact = contacts[index];
+
+        document.querySelector(
+          `input[name="gender"][value="${contact.title}"]`
+        ).checked = true;
+        document.getElementById("name").value = contact.name;
+        document.getElementById("email").value = contact.email;
+        document.getElementById("card").value = contact.card;
+        document.getElementById("save").checked = contact.save;
+
+        // Disable the Edit button after clicking it once
+        const editBtn = document.querySelector(
+          `tr:nth-child(${index + 2}) button:nth-child(5)`
+        );
+        editBtn.disabled = true;
+
+        // Show the Save button instead of Edit
+        const saveBtn = document.querySelector(
+          `tr:nth-child(${index + 2}) button:nth-child(6)`
+        );
+        saveBtn.style.display = "block";
+
+        // Hide the Add button during editing
+        addBtn.style.display = "none";
+
+        // Show the Update button during editing
+        updateBtn.style.display = "block";
+        updateBtn.dataset.index = index.toString();
+      }
+
+      function updateContact() {
+        const index = parseInt(updateBtn.dataset.index);
+        const contacts = getContactsFromLocalStorage();
+        const editedContact = {
+          title: document.querySelector('input[name="gender"]:checked').value,
+          name: document.getElementById("name").value,
+          email: document.getElementById("email").value,
+          card: document.getElementById("card").value,
+          save: document.getElementById("save").checked,
+        };
+
+        contacts.push(editedContact);
+        saveContactsToLocalStorage(contacts);
+        renderContactTable(contacts);
+        updateNumberOfUsers(contacts.length);
+
+        // Enable the Edit button, hide the Save button, and show the Add button again
+        const editBtn = document.querySelector(
+          `tr:nth-child(${contacts.length + 1}) button:nth-child(5)`
+        );
+        editBtn.disabled = false;
+
+        const saveBtn = document.querySelector(
+          `tr:nth-child(${contacts.length + 1}) button:nth-child(6)`
+        );
+        saveBtn.style.display = "none";
+
+        addBtn.style.display = "block";
+        updateBtn.style.display = "none";
+
+        // Clear input fields after adding contact
+        document.querySelector('input[name="gender"]:checked').checked = false;
+        document.getElementById("name").value = "";
+        document.getElementById("email").value = "";
+      }
+
+      function deleteContact(index) {
+        const contacts = getContactsFromLocalStorage();
+        contacts.splice(index, 1);
+        saveContactsToLocalStorage(contacts);
+        renderContactTable(contacts);
+        updateNumberOfUsers(contacts.length);
+      }
+
+      function searchContacts() {
+        const query = searchInput.value.toLowerCase();
+        const contacts = getContactsFromLocalStorage();
+        const filteredContacts = contacts.filter((contact) =>
+          contact.name.toLowerCase().includes(query)
+        );
+        renderContactTable(filteredContacts);
+      }
+
+      function getContactsFromLocalStorage() {
+        const contacts = JSON.parse(localStorage.getItem("contacts")) || [];
+        return contacts;
+      }
+
+      function saveContactsToLocalStorage(contacts) {
+        localStorage.setItem("contacts", JSON.stringify(contacts));
+      }
+
+      function renderContactTable(contacts) {
+        const tbody = contactTable.querySelector("tbody");
+        tbody.innerHTML = "";
+
+        contacts.forEach((contact, index) => {
+          const row = document.createElement("tr");
+          const nameCell = document.createElement("td");
+          const emailCell = document.createElement("td");
+          const cardCell = document.createElement("td");
+          const saveCell = document.createElement("td");
+          const actionCell = document.createElement("td");
+
+          nameCell.innerHTML = `<input type="text" id="name-${index}" value="${contact.name}">`;
+          emailCell.innerHTML = `<input type="email" id="email-${index}" value="${contact.email}">`;
+
+          // Create the card type select element
+          const cardSelect = document.createElement("select");
+          cardSelect.id = `card-${index}`;
+          const visaOption = document.createElement("option");
+          visaOption.value = "visa";
+          visaOption.textContent = "Visa";
+          cardSelect.appendChild(visaOption);
+          cardSelect.value = contact.card;
+          cardCell.appendChild(cardSelect);
+
+          // Create the save checkbox
+          const saveCheckbox = document.createElement("input");
+          saveCheckbox.type = "checkbox";
+          saveCheckbox.id = `save-${index}`;
+          saveCheckbox.checked = contact.save;
+          saveCell.appendChild(saveCheckbox);
+
+          const editBtn = document.createElement("button");
+          editBtn.textContent = "Edit";
+          editBtn.addEventListener("click", () => editContact(index));
+          actionCell.appendChild(editBtn);
+
+          const saveBtn = document.createElement("button");
+          saveBtn.textContent = "Save";
+          saveBtn.style.display = "none";
+          actionCell.appendChild(saveBtn);
+
+          const deleteBtn = document.createElement("button");
+          deleteBtn.textContent = "Delete";
+          deleteBtn.addEventListener("click", () => deleteContact(index));
+          actionCell.appendChild(deleteBtn);
+
+          row.appendChild(nameCell);
+          row.appendChild(emailCell);
+          row.appendChild(cardCell);
+          row.appendChild(saveCell);
+          row.appendChild(actionCell);
+          tbody.appendChild(row);
+        });
+
+        updateNumberOfUsers(contacts.length);
+      }
+
+      function updateNumberOfUsers(count) {
+        const footerRow = contactTable.querySelector("tfoot tr");
+        footerRow.innerHTML = `<td colspan="6">Number of users is ${count}</td>`;
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,24 @@
+{% extends "layouts/base.html" %}{% block title %} Create Post {% endblock %} {% block body %}
+
+<h1 class="text-center">Create a New Post</h1>
+<form method="POST" class="container" action="{{ url_for('posts.post_create') }}" enctype="multipart/form-data">
+  <label for="title" class="form-label">Title:</label>
+  <input type="text" name="title" class="form-control" required />
+
+  <label for="body" class="form-label">Body:</label>
+  <textarea name="body" class="form-control" required></textarea>
+
+  <label for="image" class="form-label">Image:</label>
+  <input type="file" name="image" accept=".jpg, .jpeg, .png, .gif" class="form-control" required />
+
+  <label for="category" class="form-label">Category:</label>
+  <select name="category" class="form-select" required>
+    <option value="" disabled selected>Select a category</option>
+    {% for category in categories %}
+    <option value="{{ category.id }}">{{ category.name }}</option>
+    {% endfor %}
+  </select>
+
+  <input type="submit" value="Create Post" class="form-control btn btn-outline-info mt-2" />
+</form>
+{% endblock %}

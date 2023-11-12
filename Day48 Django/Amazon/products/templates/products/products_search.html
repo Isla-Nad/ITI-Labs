@@ -1,0 +1,17 @@
+{% extends 'layouts/base.html' %} {% load static %} {% block title %}Search Result{% endblock %} {% block content %}
+<div class="row gap-5 container m-auto my-3">
+  {% for pro in products %}
+  <div class="card" style="width: 18rem">
+    <img src="{{pro.get_image_url}}" class="card-img-top w-100 h-100" alt="..." />
+    <div class="card-body">
+      <h5 class="card-title">{{pro.title}}</h5>
+      <a href="{% url 'products.profile' pro.id %}" class="btn btn-primary">Show</a>
+      <a href="{% url 'products.edit' pro.id %}" class="btn btn-warning">Edit</a>
+      <a href="{% url 'products.delete' pro.id %}" class="btn btn-danger">Delete</a>
+    </div>
+  </div>
+  {% endfor %} {% if not products %}
+  <h2 class="alert alert-danger mt-5">Sorry, No such product!</h2>
+  {% endif %}
+</div>
+{% endblock%}

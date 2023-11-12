@@ -1,0 +1,16 @@
+{% extends 'layouts/base.html' %} {% load static %} {% block title %}Products{% endblock %} {% block content %}
+<a href="{% url 'products.forms.create' %}" class="btn btn-success my-2 m-auto d-block w-25"> Create New Product </a>
+<div class="row gap-5 container m-auto my-3">
+  {% for pro in products %}
+  <div class="card" style="width: 18rem">
+    <img src="{{pro.get_image_url}}" class="card-img-top w-100 h-100" alt="..." />
+    <div class="card-body">
+      <h5 class="card-title">{{pro.title}}</h5>
+      <a href="{% url 'products.profile' pro.id %}" class="btn btn-primary">Show</a>
+      <a href="{% url 'products.edit' pro.id %}" class="btn btn-warning">Edit</a>
+      <a href="{% url 'products.delete' pro.id %}" class="btn btn-danger">Delete</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock%}
